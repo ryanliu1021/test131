@@ -15,16 +15,20 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 
 const app = express();
 const server = http.createServer(app);
+
+const domain_name = "52.8.201.196";
+const port = 3000;
+
 const io = new Server(server, {
   cors: {
-    origin: "http://52.8.201.196",
+    origin: `http://${domain_name}:${port}`,
     methods: ["GET", "POST"]
   }
 });
 
 // Enable CORS for all routes
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://52.8.201.196');
+  res.header('Access-Control-Allow-Origin', `http://${domain_name}:${port}`);
   res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') {
@@ -33,8 +37,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const domain_name = "52.8.201.196";
-const port = 80;
+
 
 const name_of_file_folder = "my_files";
 const path_to_file_folder = path.join(__dirname, name_of_file_folder);
