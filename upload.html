@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Audio</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <h1>Upload an Audio File</h1>
+
+  <form id="uploadForm" action="/my_files" method="POST" enctype="multipart/form-data">
+    <input type="file" name="myFile" accept="audio/*" required />
+
+    <label for="speedSelect">Select playback speed:</label>
+    <select name="speed" id="speedSelect">
+      <option value="0.5">0.5× (Half Speed)</option>
+      <option value="0.75">0.75×</option>
+      <option value="1.0" selected>1× (Normal)</option>
+      <option value="1.25">1.25×</option>
+      <option value="1.5">1.5×</option>
+      <option value="2.0">2×</option>
+    </select>
+
+    <button type="submit">Upload & Convert</button>
+  </form>
+
+  <h2 id="notification"></h2>
+
+  <h3>Original Audio:</h3>
+  <audio id="originalAudio" controls></audio>
+
+  <h3>Processed Audio:</h3>
+  <audio id="processedAudio" controls></audio>
+
+  <script>
+    const socket = io();
+    const notification = document.getElementById('notification');
+    const originalAudio = document.getElementById('originalAudio');
+    const processedAudio = document.getElementById('processedAudio');
+    const speedSelect = document.getElementById('speedSelect');
+
+    socket.on('file-received', filename => {
+      notification.innerText = `File received: ${filename}`;
+      originalAudio.src = `/my_files/${filename}`;
+    });
+
+    socket.on('file-processed', outputFilename => {
+      notification.innerText = `Processing complete: ${outputFilename}`;
+      processedAudio.src = `/my_files/${outputFilename}`;
+    });
+
+    socket.on('processing-error', msg => {
+      notification.innerText = `Error: ${msg}`;
+    });
+
+    const form = document.getElementById('uploadForm');
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      notification.innerText = 'Uploading and processing...';
+      processedAudio.src = '';
+      const formData = new FormData(form);
+
+      // Include the selected speed
+      const speed = speedSelect.value;
+      formData.append('speed', speed);
+
+      const response = await fetch('/my_files', { method: 'POST', body: formData });
+      const text = await response.text();
+      console.log(text);
+      form.reset();
+    });
+  </script>
+</body>
+</html>

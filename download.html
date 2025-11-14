@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Download Audio Files</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    h1, h2 { margin-bottom: 0.3em; }
+    button { margin-bottom: 1em; }
+  </style>
+</head>
+<body>
+  <h1>Download Audio Files</h1>
+
+  <h2>Last Processed File</h2>
+  <button id="downloadLatest">⬇️ Download Latest Processed File</button>
+
+  <h2>All Available Files</h2>
+  <ul id="fileList"></ul>
+
+  <script>
+    async function fetchFiles() {
+      const response = await fetch('/list-files');
+      const files = await response.json();
+
+      const listEl = document.getElementById('fileList');
+      listEl.innerHTML = '';
+
+      if (files.length === 0) {
+        listEl.innerHTML = '<li>No files found.</li>';
+        return;
+      }
+
+      // Sort by newest first (based on modified time if possible)
+      const fileInfos = await Promise.all(files.map(async f => {
+        const res = await fetch(`/my_files/${encodeURIComponent(f)}`, { method: 'HEAD' });
+        const date = res.headers.get('last-modified');
+        return { name: f, date: new Date(date) };
+      }));
+
+      fileInfos.sort((a, b) => b.date - a.date);
+
+      fileInfos.forEach(fileInfo => {
+        const li = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = `/my_files/download?name=${encodeURIComponent(fileInfo.name)}`;
+        link.innerText = `${fileInfo.name}`;
+        li.appendChild(link);
+        listEl.appendChild(li);
+      });
+    }
+
+    document.getElementById('downloadLatest').addEventListener('click', async () => {
+      // Adjusted to fetch the latest processed file, not just "faster_"
+      const response = await fetch('/latest-faster-file');
+      const data = await response.json();
+      if (data.filename) {
+        window.location.href = `/my_files/download?name=${encodeURIComponent(data.filename)}`;
+      } else {
+        alert('No processed audio file found yet!');
+      }
+    });
+
+    fetchFiles();
+  </script>
+</body>
+</html>
