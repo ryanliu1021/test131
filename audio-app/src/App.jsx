@@ -6,7 +6,9 @@ import AudioPlayer from './components/AudioPlayer';
 import FileQueue from './components/FileQueue';
 
 // Initialize Socket.io connection
-const socket = io('http://52.8.201.196:80');
+// const socket = io('http://52.8.201.196:80');
+const socket = io();
+
 
 function App() {
   const [queue, setQueue] = useState([]);
@@ -77,7 +79,8 @@ function App() {
 
   const fetchExistingFiles = async () => {
     try {
-      const response = await fetch('http://52.8.201.196:80/list-files');
+      // const response = await fetch('http://52.8.201.196:80/list-files');
+      const response = await fetch('/list-files');
       const files = await response.json();
 
       // Helper to check if a file is a processed version
@@ -144,7 +147,8 @@ function App() {
     if (window.confirm(`Delete ${fileToRemove.fileName} permanently? This will remove it from the server.`)) {
       try {
         // Call backend to delete the file
-        const response = await fetch('http://52.8.201.196:80/my_files/delete', {
+        // const response = await fetch('http://52.8.201.196:80/my_files/delete', {
+        const response = await fetch('/my_files/delete', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -211,7 +215,8 @@ function App() {
       );
 
       // Send request to backend to re-process file
-      const response = await fetch('http://52.8.201.196:80/my_files/change-speed', {
+      // const response = await fetch('http://52.8.201.196:80/my_files/change-speed', {
+      const response = await fetch('/my_files/change-speed', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
