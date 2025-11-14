@@ -32,7 +32,8 @@ const AudioPlayer = ({
 
   useEffect(() => {
     if (currentFile && audioRef.current) {
-      audioRef.current.src = `http://52.8.201.196:80/my_files/${currentFile.processedFileName || currentFile.fileName}`;
+      // audioRef.current.src = `http://52.8.201.196:80/my_files/${currentFile.processedFileName || currentFile.fileName}`;
+      audioRef.current.src = `/my_files/${currentFile.processedFileName || currentFile.fileName}`;
       audioRef.current.load();
       // Sync speed state with current file
       if (currentFile.speed !== undefined) {
@@ -146,7 +147,8 @@ const AudioPlayer = ({
     if (!currentFile) return;
 
     const fileName = currentFile.processedFileName || currentFile.fileName;
-    const downloadUrl = `http://52.8.201.196:80/my_files/download?name=${encodeURIComponent(fileName)}`;
+    // const downloadUrl = `http://52.8.201.196:80/my_files/download?name=${encodeURIComponent(fileName)}`;
+    const downloadUrl = `/my_files/download?name=${encodeURIComponent(fileName)}`;
 
     // Create a temporary anchor element to trigger download
     const link = document.createElement('a');

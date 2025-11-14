@@ -95,7 +95,8 @@ const FileQueue = ({ queue, currentFileId, onReorder, onRemove, onSelect, onFile
     const selectedFiles = queue.filter(item => selectedItems.has(item.id));
     selectedFiles.forEach(item => {
       const fileName = item.processedFileName || item.fileName;
-      const downloadUrl = `http://52.8.201.196:80/my_files/download?name=${encodeURIComponent(fileName)}`;
+      // const downloadUrl = `http://52.8.201.196:80/my_files/download?name=${encodeURIComponent(fileName)}`;
+      const downloadUrl = `/my_files/download?name=${encodeURIComponent(fileName)}`;
 
       const link = document.createElement('a');
       link.href = downloadUrl;

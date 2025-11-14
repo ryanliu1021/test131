@@ -46,7 +46,8 @@ const AudioUploadZone = ({ onFilesUploaded }) => {
         formData.append('myFile', file);
         formData.append('speed', '1.0'); // Default speed
 
-        const response = await fetch('http://52.8.201.196:80/my_files', {
+        // const response = await fetch('http://52.8.201.196:80/my_files', {
+        const response = await fetch('/my_files', {
           method: 'POST',
           body: formData,
         });
