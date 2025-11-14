@@ -7,8 +7,12 @@ import FileQueue from './components/FileQueue';
 
 // Initialize Socket.io connection
 // const socket = io('http://52.8.201.196:80');
-const socket = io();
+// const socket = io();
 
+// 統一 API base URL（注意加 :3000）
+const API_BASE = 'http://software-engineering-home-directory.com:3000';
+// Socket.io 也指到同一個 Node server
+const socket = io(API_BASE);
 
 function App() {
   const [queue, setQueue] = useState([]);
@@ -80,7 +84,7 @@ function App() {
   const fetchExistingFiles = async () => {
     try {
       // const response = await fetch('http://52.8.201.196:80/list-files');
-      const response = await fetch('/list-files');
+      const response = await fetch(`${API_BASE}/list-files`);
       const files = await response.json();
 
       // Helper to check if a file is a processed version
@@ -148,14 +152,15 @@ function App() {
       try {
         // Call backend to delete the file
         // const response = await fetch('http://52.8.201.196:80/my_files/delete', {
-        const response = await fetch('/my_files/delete', {
+        const response = await fetch(`${API_BASE}/my_files/delete`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            fileName: fileToRemove.fileName,
-          }),
+          // body: JSON.stringify({
+          //   fileName: fileToRemove.fileName,
+          // }),
+          body: JSON.stringify({ fileName: fileToRemove.fileName }),
         });
 
         const result = await response.json();
@@ -216,7 +221,7 @@ function App() {
 
       // Send request to backend to re-process file
       // const response = await fetch('http://52.8.201.196:80/my_files/change-speed', {
-      const response = await fetch('/my_files/change-speed', {
+      const response = await fetch(`${API_BASE}/my_files/change-speed`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
