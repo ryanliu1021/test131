@@ -2,6 +2,8 @@ import { useState, useRef } from 'react';
 import { FiUploadCloud } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
+const API_BASE = 'http://software-engineering-home-directory.com:3000';
+
 const AudioUploadZone = ({ onFilesUploaded }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -47,7 +49,7 @@ const AudioUploadZone = ({ onFilesUploaded }) => {
         formData.append('speed', '1.0'); // Default speed
 
         // const response = await fetch('http://52.8.201.196:80/my_files', {
-        const response = await fetch('/my_files', {
+        const response = await fetch(`${API_BASE}/my_files`, {
           method: 'POST',
           body: formData,
         });

@@ -18,6 +18,8 @@ import toast from 'react-hot-toast';
 import FileQueueItem from './FileQueueItem';
 import AudioUploadZone from './AudioUploadZone';
 
+
+
 const FileQueue = ({ queue, currentFileId, onReorder, onRemove, onSelect, onFilesUploaded }) => {
   const [selectedItems, setSelectedItems] = useState(new Set());
   const [isSelectionMode, setIsSelectionMode] = useState(false);
@@ -96,7 +98,8 @@ const FileQueue = ({ queue, currentFileId, onReorder, onRemove, onSelect, onFile
     selectedFiles.forEach(item => {
       const fileName = item.processedFileName || item.fileName;
       // const downloadUrl = `http://52.8.201.196:80/my_files/download?name=${encodeURIComponent(fileName)}`;
-      const downloadUrl = `/my_files/download?name=${encodeURIComponent(fileName)}`;
+      const API_BASE = 'http://software-engineering-home-directory.com:3000';
+      const downloadUrl = `${API_BASE}/my_files/download?name=${encodeURIComponent(fileName)}`;
 
       const link = document.createElement('a');
       link.href = downloadUrl;
