@@ -24,32 +24,49 @@ const allowedOrigins = [
   "https://software-engineering-home-directory.com",
   "http://www.software-engineering-home-directory.com",
   "https://www.software-engineering-home-directory.com",
-  "http://52.8.201.196",   // 如果你有時候用 IP 測試，可以保留
-  "http://localhost:3000", // 開發用，看你需不需要
+  "http://52.8.201.196",
+  "http://localhost:3000",
 ];
+
+// const io = new Server(server, {
+//   cors: {
+//     origin: allowedOrigins,
+//     methods: ["GET", "POST"]
+//   }
+// });
+
+
+
+// Enable CORS for all routes
+// app.use((req, res, next) => {
+//   const origin = req.headers.origin;
+//   if (allowedOrigins.includes(origin)) {
+//     res.header("Access-Control-Allow-Origin", origin);
+//   }
+//   res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type');
+//   if (req.method === 'OPTIONS') {
+//     return res.sendStatus(200);
+//   }
+//   next();
+// });
 
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: "*",
     methods: ["GET", "POST"]
   }
 });
 
-// Enable CORS for all routes
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
-  }
-  res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  if (req.method === 'OPTIONS') {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  if (req.method === "OPTIONS") {
     return res.sendStatus(200);
   }
   next();
 });
-
-
 
 const name_of_file_folder = "my_files";
 const path_to_file_folder = path.join(__dirname, name_of_file_folder);
