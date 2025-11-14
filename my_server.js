@@ -19,9 +19,18 @@ const server = http.createServer(app);
 const domain_name = "52.8.201.196";
 const port = 3000;
 
+const allowedOrigins = [
+  "http://software-engineering-home-directory.com",
+  "https://software-engineering-home-directory.com",
+  "http://www.software-engineering-home-directory.com",
+  "https://www.software-engineering-home-directory.com",
+  "http://52.8.201.196",   // 如果你有時候用 IP 測試，可以保留
+  "http://localhost:3000", // 開發用，看你需不需要
+];
+
 const io = new Server(server, {
   cors: {
-    origin: `http://${domain_name}:${port}`,
+    origin: allowedOrigins,
     methods: ["GET", "POST"]
   }
 });
