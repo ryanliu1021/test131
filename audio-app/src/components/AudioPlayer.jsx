@@ -12,6 +12,8 @@ import {
 import { BiArrowToRight } from 'react-icons/bi';
 import toast from 'react-hot-toast';
 
+const API_BASE = 'http://software-engineering-home-directory.com:3000';
+
 const AudioPlayer = ({
   currentFile,
   onNext,
